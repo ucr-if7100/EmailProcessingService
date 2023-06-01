@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_email_table
+      author: JeisonAraya
+      changes:
+        - createTable:
+            tableName: email
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: subject
+                  type: varchar(255)
+              - column:
+                  name: from_address
+                  type: varchar(255)
+              - column:
+                  name: to_address
+                  type: varchar(255)
+              - column:
+                  name: sent_date
+                  type: varchar(255)
+              - column:
+                  name: content
+                  type: text
