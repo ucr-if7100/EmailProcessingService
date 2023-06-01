@@ -34,11 +34,13 @@ public class EmailService {
             store.connect(host, mailUser, mailPassword);
 
             Folder emailFolder = store.getFolder("INBOX");
-            emailFolder.open(Folder.READ_ONLY);
+            emailFolder.open(Folder.READ_WRITE);
 
             List<Email> emails = convertToEmails(List.of(emailFolder.getMessages()));
-
             emailRepository.saveAll(emails);
+
+            emailFolder.close(true);
+            store.close();
 
             return emails;
         } catch (MessagingException e) {
@@ -61,6 +63,7 @@ public class EmailService {
         for (Message message : messages) {
             try {
                 emails.add(convertToEmail(message));
+                message.setFlag(Flags.Flag.SEEN, true);
             } catch (MessagingException | IOException ex) {
                 System.err.println("Error on email extraction");
             }
@@ -83,11 +86,22 @@ public class EmailService {
                 BodyPart bodyPart = multipart.getBodyPart(i);
                 if (bodyPart.isMimeType("text/html") || bodyPart.isMimeType("text/plain")) {
                     email.setContent((String) bodyPart.getContent());
-                    System.out.println("Content: " + bodyPart.getContent());
+                } else if (bodyPart.isMimeType("multipart/alternative")) {
+                    email.setContent(extractHtml((Multipart) bodyPart.getContent()));
                 }
             }
         }
 
         return email;
+    }
+
+    private String extractHtml(Multipart multipart) throws MessagingException, IOException {
+        for (int i = 0; i < multipart.getCount(); i++) {
+            BodyPart bodyPart1 = multipart.getBodyPart(i);
+            if (bodyPart1.isMimeType("text/html")) {
+                return (String) bodyPart1.getContent();
+            }
+        }
+        return null;
     }
 }
