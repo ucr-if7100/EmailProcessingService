@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class EmailProcessingServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EmailProcessingServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EmailProcessingServiceApplication.class, args);
+    }
 
 }

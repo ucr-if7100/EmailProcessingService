@@ -6,10 +6,11 @@ import java.sql.Date;
 @Entity
 @Table(name = "Transaction")
 public class Transaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
+    @Id//added
     private String email;
 
     private Date date;
@@ -22,6 +23,7 @@ public class Transaction {
 
     private String category;
 
+    @Column(name = "isexpense")
     private boolean isExpense;
 
     @ManyToOne
@@ -29,6 +31,86 @@ public class Transaction {
     private Bank bank;
 
     @ManyToOne
-    @JoinColumn(name = "AccountId_id", nullable = false)
+    @JoinColumn(name = "Accountid_id", nullable = false)
     private AccountId accountId;
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isExpense() {
+        return isExpense;
+    }
+
+    public void setExpense(boolean expense) {
+        isExpense = expense;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public AccountId getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(AccountId accountId) {
+        this.accountId = accountId;
+    }
 }
