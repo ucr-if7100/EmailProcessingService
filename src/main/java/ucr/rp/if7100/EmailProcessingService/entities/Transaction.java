@@ -6,9 +6,6 @@ import java.sql.Date;
 @Entity
 @Table(name = "Transaction")
 public class Transaction {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     @Id//added
     private String email;
@@ -33,14 +30,6 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "Accountid_id", nullable = false)
     private AccountId accountId;
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
 
     public String getEmail() {
         return email;

@@ -3,8 +3,6 @@ package ucr.rp.if7100.EmailProcessingService;
 //import org.junit.jupiter.api.Test;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,13 +57,6 @@ public class TransactionServiceIntegrationTest {
 
         Transaction savedTransaction = transactionService.saveTransaction(transaction);
 
-//        Transaction retrievedTransaction = transactionService.getTransactionById(savedTransaction.getId());
-//
-//        assertNotNull(retrievedTransaction);
-//        assertEquals(savedTransaction.getId(), retrievedTransaction.getId());
-//
-//        transactionService.deleteTransaction(savedTransaction.getId());
-
         Transaction retrievedTransaction = transactionService.getTransactionById(savedTransaction.getEmail());
 
         assertNotNull(retrievedTransaction);
@@ -101,12 +92,10 @@ public class TransactionServiceIntegrationTest {
 
             // Actualizar los campos de la transacción
             transaction.setAmount(200.0f);
-            // Actualizar los demás atributos según sea necesario
 
             Transaction updatedTransaction = transactionService.saveTransaction(transaction);
 
             assertEquals(200.0f, updatedTransaction.getAmount());
-            // Comprobar los demás atributos actualizados
 
             transactionService.deleteTransaction(updatedTransaction.getEmail());
         }
