@@ -278,7 +278,9 @@ CR5201XXXXXXXXXXXX2896          4
      */
     public String DateConverter(String rawDate){
 
-
+        //16 de marzo de 2023 1:45 p.
+        String[] arrayDate = rawDate.split(" ");
+        System.out.println(arrayDate.toString());
         return  " ";
     }
 }
