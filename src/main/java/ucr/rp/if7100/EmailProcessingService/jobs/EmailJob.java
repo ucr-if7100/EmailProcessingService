@@ -14,7 +14,7 @@ public class EmailJob {
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void saveEmailsJob(){
         try {
             emailService.getInboxEmails();
