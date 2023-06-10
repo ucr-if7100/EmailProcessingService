@@ -18,12 +18,6 @@ import java.util.regex.Pattern;
 
 public class BACTemplate {
 
-
-    /*
-    private final Transaction transaction = new Transaction();
-    private final Bank bank = new Bank();
-    private final AccountId accountId = new AccountId();
-    */
     /**
      * A transfer from one BAC acc to another one
      *
@@ -198,6 +192,8 @@ villaluis24@gmail.com               10
                 datos.add(monto);
             }
         }
+        // Removes CRC in ammount. I.e CRC 5.000
+        datos.set(6, datos.get(6).replace(" CRC", "").replace(",", ""));
 
         return datos;
     }
@@ -225,26 +221,34 @@ last4
 actNumber
 iban
 -------
-sinpe@notificacionesbaccr.com   0
-VILLALUIS24@gmail.com           1
-LUIS GABRIEL ARGUEDAS VILLALOB  2
-2023031610224011141398013       3
-CR5201XXXXXXXXXXXX2896          4
-14,000.00                       5
+16 de marzo de 2023 1:45 p.         0
+sinpe@notificacionesbaccr.com       1
+VILLALUIS24@gmail.com               2
+LUIS GABRIEL ARGUEDAS VILLALOB      3
+2023031610224011141398013           4
+CR5201XXXXXXXXXXXX2896              5
+14,000.00                           6
+
+
  */
 
         Transaction transaction = new Transaction();
         Bank bank = new Bank();
         AccountId accountId = new AccountId();
-
         bank.setName("BAC");
+        accountId.setIban(data.get(5));
+        accountId.setActNumber(data.get(5));
+        String formattedDate = DateConverter(data.get(0));
+        //formatear la fecha
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formattedDate;
+        java.util.Date utilDate = dateFormat.parse(dateString);
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-        accountId.setIban(data.get(4));
-        accountId.setActNumber(data.get(3));
 
-        transaction.setEmail(data.get(1));
-        //DATE
-        transaction.setAmount(Float.parseFloat(data.get(5)));
+        transaction.setEmail(data.get(2));
+        transaction.setDate(sqlDate);
+        transaction.setAmount(Float.parseFloat(data.get(6)));
         //REFERENCE
         transaction.setDescription("Notificación de Transferencia SINPE");
         //CATEGORY
@@ -258,30 +262,73 @@ CR5201XXXXXXXXXXXX2896          4
 //---------------------------------
 
     /**
-     * This method will convert values in Colones to floats in order to be recorded successfully in db.
-     *
-     * @param number Specific amount should be converted into float
-     */
-    public float colonConverterforBAC(String number) {
-        number = number.replace("CRC ", "").replace(" CRC", "");
-        number = number.replace(",", "");
-        float ammount = Float.parseFloat(number);
-        return ammount;
-    }
-
-
-    /**
      * This method will convert a raw date string to a date string for
      * conversion in the saveBACTransactionInformation2 method
      *
      * @param rawDate Raw date obtained from the email extraction
      */
     public String DateConverter(String rawDate){
-
-        //16 de marzo de 2023 1:45 p.
+ /*
+        16              0
+        de              1
+        marzo           2
+        de              3
+        2023            4
+        1:45            5
+        p.              6
+         */
+        String finalDate="";
         String[] arrayDate = rawDate.split(" ");
-        System.out.println(arrayDate.toString());
-        return  " ";
+
+        String day = arrayDate[0];
+        String month =arrayDate[2];
+        String year =arrayDate[4];
+
+        //ASIGNACION DEL MES
+        switch (month.toLowerCase()) {
+            case "enero":
+                month = "01";
+                break;
+            case "febrero":
+                month = "02";
+                break;
+            case "marzo":
+                month = "03";
+                break;
+            case "abril":
+                month = "04";
+                break;
+            case "mayo":
+                month = "05";
+                break;
+            case "junio":
+                month = "06";
+                break;
+            case "julio":
+                month = "07";
+                break;
+            case "agosto":
+                month = "08";
+                break;
+            case "septiembre":
+                month = "09";
+                break;
+            case "octubre":
+                month = "10";
+                break;
+            case "noviembre":
+                month = "11";
+                break;
+            case "diciembre":
+                month = "12";
+                break;
+            default:
+                month = "-1"; // Valor por defecto para un nombre de mes no válido
+                break;
+        }
+
+        finalDate = year+"-"+month+"-"+day;
+        return  finalDate;
     }
 }
 
