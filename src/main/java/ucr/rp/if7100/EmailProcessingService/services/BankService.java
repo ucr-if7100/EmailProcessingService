@@ -21,7 +21,7 @@ public class BankService {
         return bankRepository.findAll();
     }
 
-    public Bank getBankById(String id) {
+    public Bank getBankById(Long id) {
         Optional<Bank> optionalBank = bankRepository.findById(id);
         return optionalBank.orElse(null);
     }
@@ -30,7 +30,7 @@ public class BankService {
         return bankRepository.save(bank);
     }
 
-    public void deleteBank(String id) {
+    public void deleteBank(Long id) {
         bankRepository.deleteById(id);
     }
 }

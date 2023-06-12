@@ -22,9 +22,8 @@ public class BankServiceIntegrationTests {
 
     @Test
     public void testSaveBank() {
-        Bank bank = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
+        Bank bank = new Bank();
+        bank.setName("Bank 1");
 
         Bank savedBank = bankService.saveBank(bank);
 
@@ -39,16 +38,12 @@ public class BankServiceIntegrationTests {
 
     @Test
     public void testUpdateBank() {
-        Bank.Builder builder = new Bank.Builder();
-        Bank bank = builder
-                .withName("Bank 1")
-                .build();
+        Bank bank = new Bank();
+        bank.setName("Bank 1");
 
         bankService.saveBank(bank);
 
-        bank = builder
-                .withName("Updated Bank")
-                .build();
+        bank.setName("Updated Bank");
 
         Bank updatedBank = bankService.saveBank(bank);
 
@@ -59,13 +54,11 @@ public class BankServiceIntegrationTests {
 
     @Test
     public void testGetAllBanks() {
-        Bank bank1 = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
+        Bank bank1 = new Bank();
+        bank1.setName("Bank 1");
 
-        Bank bank2 = new Bank.Builder()
-                .withName("Bank 2")
-                .build();
+        Bank bank2 = new Bank();
+        bank2.setName("Bank 2");
 
         bankService.saveBank(bank1);
         bankService.saveBank(bank2);
@@ -77,9 +70,8 @@ public class BankServiceIntegrationTests {
 
     @Test
     public void testDeleteBank() {
-        Bank bank = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
+        Bank bank = new Bank();
+        bank.setName("Bank 1");
 
         Bank savedBank = bankService.saveBank(bank);
 

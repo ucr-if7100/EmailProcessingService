@@ -7,12 +7,6 @@ databaseChangeLog:
             tableName: Transaction
             columns:
               - column:
-                  name: id
-                  type: varchar(40)
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: email
                   type: varchar(255)
                   constraints:
@@ -49,12 +43,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: Bank_id
-                  type: varchar(40)
+                  type: bigint
                   constraints:
                     nullable: false
               - column:
                   name: AccountId_id
-                  type: varchar(40)
+                  type: bigint
                   constraints:
                     nullable: false
 
@@ -63,7 +57,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(40)
+                  type: bigint
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -78,7 +73,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(40)
+                  type: bigint
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
