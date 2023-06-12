@@ -8,5 +8,14 @@
       <jdbc-url>jdbc:mysql://localhost:3306/email_processing_service</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="EmailProcessingService/Hibernate" uuid="8f246aa7-129f-413b-b1ac-4c900f4f0afd">
+      <driver-ref>athena</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate</remarks>
+      <jdbc-driver>com.simba.athena.jdbc42.Driver</jdbc-driver>
+      <jdbc-url>${DATABASE_URL}</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
