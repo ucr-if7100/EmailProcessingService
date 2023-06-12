@@ -21,7 +21,7 @@ public class AccountIdService {
         return accountIdRepository.findAll();
     }
 
-    public AccountId getAccountIdById(Long id) {
+    public AccountId getAccountIdById(String id) {
         Optional<AccountId> optionalAccountId = accountIdRepository.findById(id);
         return optionalAccountId.orElse(null);
     }
@@ -30,7 +30,7 @@ public class AccountIdService {
         return accountIdRepository.save(accountId);
     }
 
-    public void deleteAccountId(Long id) {
+    public void deleteAccountId(String id) {
         accountIdRepository.deleteById(id);
     }
 }

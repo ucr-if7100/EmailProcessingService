@@ -22,9 +22,9 @@ public class AccountIdServiceIntegrationTests {
 
     @Test
     public void testSaveAccountId() {
-        AccountId accountId = new AccountId();
-        accountId.setId(1L);
-        accountId.setPhoneNumber("12345678");
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber("12345678")
+                .build();
 
         AccountId savedAccountId = accountIdService.saveAccountId(accountId);
 
@@ -40,14 +40,15 @@ public class AccountIdServiceIntegrationTests {
     @Test
     public void testUpdateAccountId() {
         // Crear una entidad de AccountId existente en la base de datos
-        AccountId accountId = new AccountId();
-        accountId.setId(1L);
-        accountId.setPhoneNumber("12345678");
+        AccountId.Builder builder = new AccountId.Builder();
+        AccountId accountId = builder
+                .withPhoneNumber("12345678")
+                .build();
 
         accountIdService.saveAccountId(accountId);
 
         // Actualizar los campos de la entidad
-        accountId.setPhoneNumber("87654321");
+        accountId = builder.withPhoneNumber("87654321").build();
 
         AccountId updatedAccountId = accountIdService.saveAccountId(accountId);
 
@@ -58,14 +59,13 @@ public class AccountIdServiceIntegrationTests {
 
     @Test
     public void testGetAllAccountIds() {
-        // Crear varias entidades de AccountId
-        AccountId accountId1 = new AccountId();
-        accountId1.setId(1L);
-        accountId1.setPhoneNumber("12345678");
+        AccountId accountId1 = new AccountId.Builder()
+                .withPhoneNumber("12345678")
+                .build();
 
-        AccountId accountId2 = new AccountId();
-        accountId2.setId(2L);
-        accountId2.setPhoneNumber("87654321");
+        AccountId accountId2 = new AccountId.Builder()
+                .withPhoneNumber("87654321")
+                .build();
 
         // Guardar las entidades en la base de datos
         accountIdService.saveAccountId(accountId1);
@@ -75,15 +75,15 @@ public class AccountIdServiceIntegrationTests {
         List<AccountId> allAccountIds = accountIdService.getAllAccountIds();
 
         // Verificar que se hayan guardado correctamente todas las entidades
-        assert(2 <= allAccountIds.size());
+        assert (2 <= allAccountIds.size());
     }
 
     @Test
     public void testDeleteAccountId() {
         // Crear una entidad de AccountId existente en la base de datos
-        AccountId accountId = new AccountId();
-        accountId.setId(1L);
-        accountId.setPhoneNumber("12345678");
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber("12345678")
+                .build();
 
         AccountId savedAccountId = accountIdService.saveAccountId(accountId);
 

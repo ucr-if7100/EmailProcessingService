@@ -1,8 +1,6 @@
 package ucr.rp.if7100.EmailProcessingService;
 
-//import org.junit.jupiter.api.Test;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,157 +32,157 @@ public class TransactionServiceIntegrationTest {
 
     @Test
     public void testSaveTransaction() {
-        Transaction transaction = new Transaction();
-        // Configurar los atributos de la transacción
-        transaction.setEmail("example@example.com");
-        transaction.setDate(new Date(2023, 6, 20));
-        transaction.setAmount(100.0f);
-        transaction.setReference("REF123");
-        transaction.setDescription("Example transaction");
-        transaction.setCategory("Example category");
-        transaction.setExpense(true);
-
-        Bank bank = new Bank();
-        bank.setName("Bank 1");
-        bank = bankService.saveBank(bank);
-
-        AccountId accountId = new AccountId();
-        accountId.setPhoneNumber("123456789");
-        accountId = accountIdService.saveAccountId(accountId);
-
-        transaction.setBank(bank);
-        transaction.setAccountId(accountId);
+        Bank bank = new Bank.Builder()
+                .withName("Bank 1")
+                .build();
+        bankService.saveBank(bank);
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber("123456789")
+                .build();
+        accountIdService.saveAccountId(accountId);
+        Transaction transaction = new Transaction.Builder()
+                .withEmail("example@example.com")
+                .withDate(new Date(2023, 6, 20))
+                .withAmount(100.0f)
+                .withReference("REF123")
+                .withDescription("Example transaction")
+                .withCategory("Example category")
+                .withIsExpense(true)
+                .withBank(bank)
+                .withAccountId(accountId)
+                .build();
 
         Transaction savedTransaction = transactionService.saveTransaction(transaction);
 
-        Transaction retrievedTransaction = transactionService.getTransactionById(savedTransaction.getEmail());
+        Transaction retrievedTransaction = transactionService.getTransactionById(savedTransaction.getId());
 
         assertNotNull(retrievedTransaction);
         assertEquals(savedTransaction.getEmail(), retrievedTransaction.getEmail());
 
-        transactionService.deleteTransaction(savedTransaction.getEmail());
+        transactionService.deleteTransaction(savedTransaction.getId());
     }
 
-        @Test
-        public void testUpdateTransaction() {
-            Transaction transaction = new Transaction();
-            // Configurar los atributos de la transacción
-            transaction.setEmail("example@example.com");
-            transaction.setDate(new Date(2023, 6, 20));
-            transaction.setAmount(100.0f);
-            transaction.setReference("REF123");
-            transaction.setDescription("Example transaction");
-            transaction.setCategory("Example category");
-            transaction.setExpense(true);
+    @Test
+    public void testUpdateTransaction() {
 
-            Bank bank = new Bank();
-            bank.setName("Bank 1");
-            bank = bankService.saveBank(bank);
+        Bank bank = new Bank.Builder()
+                .withName("Bank 1")
+                .build();
+        bankService.saveBank(bank);
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber("123456789")
+                .build();
+        accountIdService.saveAccountId(accountId);
+        Transaction.Builder builder = new Transaction.Builder();
+        Transaction transaction = builder
+                .withEmail("example@example.com")
+                .withDate(new Date(2023, 6, 20))
+                .withAmount(100.0f)
+                .withReference("REF123")
+                .withDescription("Example transaction")
+                .withCategory("Example category")
+                .withIsExpense(true)
+                .withBank(bank)
+                .withAccountId(accountId)
+                .build();
 
-            AccountId accountId = new AccountId();
-            accountId.setPhoneNumber("123456789");
-            accountId = accountIdService.saveAccountId(accountId);
+        // Guardar la transacción
+        transactionService.saveTransaction(transaction);
 
-            transaction.setBank(bank);
-            transaction.setAccountId(accountId);
+        // Actualizar los campos de la transacción
+        builder.withAmount(200.0f);
+        transaction = builder.build();
 
-            Transaction savedTransaction = transactionService.saveTransaction(transaction);
+        Transaction updatedTransaction = transactionService.saveTransaction(transaction);
 
-            // Actualizar los campos de la transacción
-            transaction.setAmount(200.0f);
+        assertEquals(200.0f, updatedTransaction.getAmount());
 
-            Transaction updatedTransaction = transactionService.saveTransaction(transaction);
+        transactionService.deleteTransaction(updatedTransaction.getId());
 
-            assertEquals(200.0f, updatedTransaction.getAmount());
+    }
 
-            transactionService.deleteTransaction(updatedTransaction.getEmail());
-        }
+    @Test
+    public void testGetAllTransactions() {
 
-        @Test
-        public void testGetAllTransactions() {
-            // Crear varias transacciones
-            Transaction transaction = new Transaction();
-            // Configurar los atributos de la transacción
-            transaction.setEmail("example@example.com");
-            transaction.setDate(new Date(2023, 6, 20));
-            transaction.setAmount(100.0f);
-            transaction.setReference("REF123");
-            transaction.setDescription("Example transaction");
-            transaction.setCategory("Example category");
-            transaction.setExpense(true);
+        //Crear varias transacciones
+        Bank bank = new Bank.Builder()
+                .withName("Bank 1")
+                .build();
+        bankService.saveBank(bank);
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber("123456789")
+                .build();
+        accountIdService.saveAccountId(accountId);
+        Transaction transaction1 = new Transaction.Builder()
+                .withEmail("example@example.com")
+                .withDate(new Date(2023, 6, 20))
+                .withAmount(100.0f)
+                .withReference("REF123")
+                .withDescription("Example transaction")
+                .withCategory("Example category")
+                .withIsExpense(true)
+                .withBank(bank)
+                .withAccountId(accountId)
+                .build();
 
-            Bank bank = new Bank();
-            bank.setName("Bank 1");
-            bank = bankService.saveBank(bank);
+        transactionService.saveTransaction(transaction1);
 
-            AccountId accountId = new AccountId();
-            accountId.setPhoneNumber("123456789");
-            accountId = accountIdService.saveAccountId(accountId);
+        Transaction transaction2 = new Transaction.Builder()
+                .withEmail("example@example.com")
+                .withDate(new Date(2023, 6, 20))
+                .withAmount(100.0f)
+                .withReference("REF123")
+                .withDescription("Example transaction")
+                .withCategory("Example category")
+                .withIsExpense(true)
+                .withBank(bank)
+                .withAccountId(accountId)
+                .build();
 
-            transaction.setBank(bank);
-            transaction.setAccountId(accountId);
+        transactionService.saveTransaction(transaction2);
 
-            transactionService.saveTransaction(transaction);
+        List<Transaction> allTransactions = transactionService.getAllTransactions();
 
-            transaction = new Transaction();
-            // Configurar los atributos de la transacción
-            transaction.setEmail("example2@example.com");
-            transaction.setDate(new Date(2023, 6, 20));
-            transaction.setAmount(100.0f);
-            transaction.setReference("REF123");
-            transaction.setDescription("Example transaction");
-            transaction.setCategory("Example category");
-            transaction.setExpense(true);
+        assertTrue(allTransactions.size() >= 2);
 
+        transactionService.deleteTransaction(transaction1.getId());
+        transactionService.deleteTransaction(transaction2.getId());
 
-            bank = bankService.saveBank(bank);
-            accountId = accountIdService.saveAccountId(accountId);
+    }
 
-            transaction.setBank(bank);
-            transaction.setAccountId(accountId);
+    @Test
+    public void testDeleteTransaction() {
+        // Crear una transacción
+        Bank bank = new Bank.Builder()
+                .withName("Bank 1")
+                .build();
+        bankService.saveBank(bank);
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber("123456789")
+                .build();
+        accountIdService.saveAccountId(accountId);
+        Transaction transaction = new Transaction.Builder()
+                .withEmail("example@example.com")
+                .withDate(new Date(2023, 6, 20))
+                .withAmount(100.0f)
+                .withReference("REF123")
+                .withDescription("Example transaction")
+                .withCategory("Example category")
+                .withIsExpense(true)
+                .withBank(bank)
+                .withAccountId(accountId)
+                .build();
 
-            transactionService.saveTransaction(transaction);
+        Transaction savedTransaction = transactionService.saveTransaction(transaction);
 
-            List<Transaction> allTransactions = transactionService.getAllTransactions();
+        // Eliminar la transacción por su ID
+        transactionService.deleteTransaction(savedTransaction.getId());
 
-            assertTrue(allTransactions.size() >= 2);
+        // Intentar obtener la transacción eliminada por su ID (debería ser null)
+        Transaction deletedTransaction = transactionService.getTransactionById(savedTransaction.getId());
 
-        }
-
-        @Test
-        public void testDeleteTransaction() {
-            // Crear una transacción existente en la base de datos
-            Transaction transaction = new Transaction();
-            // Configurar los atributos de la transacción
-            transaction.setEmail("example@example.com");
-            transaction.setDate(new Date(2023, 6, 20));
-            transaction.setAmount(100.0f);
-            transaction.setReference("REF123");
-            transaction.setDescription("Example transaction");
-            transaction.setCategory("Example category");
-            transaction.setExpense(true);
-
-            Bank bank = new Bank();
-            bank.setName("Bank 1");
-            bank = bankService.saveBank(bank);
-
-            AccountId accountId = new AccountId();
-            accountId.setPhoneNumber("123456789");
-            accountId = accountIdService.saveAccountId(accountId);
-
-            transaction.setBank(bank);
-            transaction.setAccountId(accountId);
-
-            Transaction savedTransaction = transactionService.saveTransaction(transaction);
-
-            // Eliminar la transacción por su ID
-            transactionService.deleteTransaction(savedTransaction.getEmail());
-
-            // Intentar obtener la transacción eliminada por su ID (debería ser null)
-            Transaction deletedTransaction = transactionService.getTransactionById(savedTransaction.getEmail());
-
-            assertNull(deletedTransaction);
-        }
+        assertNull(deletedTransaction);
+    }
 
 }
 
