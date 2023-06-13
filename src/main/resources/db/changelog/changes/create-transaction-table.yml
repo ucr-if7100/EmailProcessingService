@@ -43,8 +43,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: isExpense
-                  type: boolean
+                  name: transactionType
+                  type: varchar(50)
                   constraints:
                     nullable: false
               - column:

@@ -8,6 +8,7 @@ import org.springframework.test.context.TestPropertySource;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
 import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
+import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
 import ucr.rp.if7100.EmailProcessingService.services.AccountIdService;
 import ucr.rp.if7100.EmailProcessingService.services.BankService;
 import ucr.rp.if7100.EmailProcessingService.services.TransactionService;
@@ -47,7 +48,7 @@ public class TransactionServiceIntegrationTest {
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
-                .withIsExpense(true)
+                .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
                 .build();
@@ -81,7 +82,7 @@ public class TransactionServiceIntegrationTest {
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
-                .withIsExpense(true)
+                .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
                 .build();
@@ -120,7 +121,7 @@ public class TransactionServiceIntegrationTest {
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
-                .withIsExpense(true)
+                .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
                 .build();
@@ -134,7 +135,7 @@ public class TransactionServiceIntegrationTest {
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
-                .withIsExpense(true)
+                .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
                 .build();
@@ -168,7 +169,7 @@ public class TransactionServiceIntegrationTest {
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
-                .withIsExpense(true)
+                .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
                 .build();

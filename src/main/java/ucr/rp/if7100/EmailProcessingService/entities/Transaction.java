@@ -1,5 +1,7 @@
 package ucr.rp.if7100.EmailProcessingService.entities;
 
+import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.UUID;
@@ -23,8 +25,9 @@ public class Transaction {
 
     private String category;
 
-    @Column(name = "isexpense")
-    private boolean isExpense;
+    @Column(name = "transactiontype")
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
 
     @ManyToOne
     @JoinColumn(name = "Bank_id", nullable = false)
@@ -38,7 +41,7 @@ public class Transaction {
         // Constructor vacío para JPA
     }
 
-    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, boolean isExpense, Bank bank, AccountId accountId) {
+    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, TransactionType transactionType, Bank bank, AccountId accountId) {
         this.id = id;
         this.email = email;
         this.date = date;
@@ -46,7 +49,7 @@ public class Transaction {
         this.reference = reference;
         this.description = description;
         this.category = category;
-        this.isExpense = isExpense;
+        this.transactionType = transactionType;
         this.bank = bank;
         this.accountId = accountId;
     }
@@ -79,8 +82,8 @@ public class Transaction {
         return category;
     }
 
-    public boolean isExpense() {
-        return isExpense;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
     public Bank getBank() {
@@ -99,7 +102,7 @@ public class Transaction {
         private String reference;
         private String description;
         private String category;
-        private boolean isExpense;
+        private TransactionType transactionType;
         private Bank bank;
         private AccountId accountId;
 
@@ -138,8 +141,8 @@ public class Transaction {
             return this;
         }
 
-        public Builder withIsExpense(boolean isExpense) {
-            this.isExpense = isExpense;
+        public Builder withTransactionType(TransactionType isExpense) {
+            this.transactionType = isExpense;
             return this;
         }
 
@@ -154,7 +157,7 @@ public class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(id, email, date, amount, reference, description, category, isExpense, bank, accountId);
+            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bank, accountId);
         }
     }
 }
