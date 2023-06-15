@@ -2,25 +2,22 @@ package ucr.rp.if7100.EmailProcessingService.entities;
 
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class Email {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
     private String subject;
     private String fromAddress;
     private String toAddress;
     private String sentDate;
     private String content;
 
-    public Email() {
-    }
+    public Email() { }
 
-    public Email(long id, String subject, String fromAddress, String toAddress, String sentDate, String content) {
+    public Email(String id, String subject, String fromAddress, String toAddress, String sentDate, String content) {
         this.id = id;
         this.subject = subject;
         this.fromAddress = fromAddress;
@@ -29,11 +26,11 @@ public class Email {
         this.content = content;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -75,5 +72,52 @@ public class Email {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public static class Builder {
+        private String id;
+        private String subject;
+        private String fromAddress;
+        private String toAddress;
+        private String sentDate;
+        private String content;
+
+        public Builder() {
+            this.id = UUID.randomUUID().toString();
+        }
+
+        public Builder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withSubject(String subject) {
+            this.subject = subject;
+            return this;
+        }
+
+        public Builder withFromAddress(String fromAddress) {
+            this.fromAddress = fromAddress;
+            return this;
+        }
+
+        public Builder withToAddress(String toAddress) {
+            this.toAddress = toAddress;
+            return this;
+        }
+
+        public Builder withSentDate(String sentDate) {
+            this.sentDate = sentDate;
+            return this;
+        }
+
+        public Builder withContent(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Email build() {
+            return new Email(this.id, this.subject, this.fromAddress, this.toAddress, this.sentDate, this.content);
+        }
     }
 }

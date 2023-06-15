@@ -72,12 +72,12 @@ public class EmailService {
         return emails;
     }
     private Email convertToEmail(Message message) throws MessagingException, IOException {
-        Email email = new Email();
-
-        email.setSubject(message.getSubject());
-        email.setFromAddress(InternetAddress.toString(message.getFrom()));
-        email.setToAddress(InternetAddress.toString(message.getRecipients(Message.RecipientType.TO)));
-        email.setSentDate(message.getSentDate().toString());
+        Email email = new Email.Builder()
+                .withSubject(message.getSubject())
+                .withFromAddress(InternetAddress.toString(message.getFrom()))
+                .withToAddress(InternetAddress.toString(message.getRecipients(Message.RecipientType.TO)))
+                .withSentDate(message.getSentDate().toString())
+                .build();
 
         Object contentObject = message.getContent();
 
