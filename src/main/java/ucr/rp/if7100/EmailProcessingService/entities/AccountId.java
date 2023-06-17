@@ -1,64 +1,94 @@
 package ucr.rp.if7100.EmailProcessingService.entities;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
-@Table(name = "AccountId")
+@Table(name = "accountid")
 public class AccountId {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "phonenumber")
     private String phoneNumber;
 
     @Column(nullable = true)
     private String last4;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "actnumber")
     private String actNumber;
 
     @Column(nullable = true)
     private String iban;
 
-    public Long getId() {
-        return id;
+    protected AccountId() {
+        // Constructor vacío para JPA
     }
 
-    public void setId(Long id) {
+    private AccountId(String id, String phoneNumber, String last4, String actNumber, String iban) {
         this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.last4 = last4;
+        this.actNumber = actNumber;
+        this.iban = iban;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getLast4() {
         return last4;
-    }
-
-    public void setLast4(String last4) {
-        this.last4 = last4;
     }
 
     public String getActNumber() {
         return actNumber;
     }
 
-    public void setActNumber(String actNumber) {
-        this.actNumber = actNumber;
-    }
-
     public String getIban() {
         return iban;
     }
 
-    public void setIban(String iban) {
-        this.iban = iban;
+    public static class Builder {
+        private String id;
+        private String phoneNumber;
+        private String last4;
+        private String actNumber;
+        private String iban;
+
+        public Builder() {
+            // Generar un ID aleatorio utilizando UUID
+            this.id = UUID.randomUUID().toString();
+        }
+
+        public Builder withPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder withLast4(String last4) {
+            this.last4 = last4;
+            return this;
+        }
+
+        public Builder withActNumber(String actNumber) {
+            this.actNumber = actNumber;
+            return this;
+        }
+
+        public Builder withIban(String iban) {
+            this.iban = iban;
+            return this;
+        }
+
+        public AccountId build() {
+            return new AccountId(id, phoneNumber, last4, actNumber, iban);
+        }
     }
 }
+

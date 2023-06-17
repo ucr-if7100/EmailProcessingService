@@ -26,4 +26,4 @@ databaseChangeLog:
                   type: varchar(255)
               - column:
                   name: content
-                  type: text
+                  type: text(65000)

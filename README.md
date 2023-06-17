@@ -19,6 +19,10 @@ Below, you will find a list of the required environment variables to configure a
 
 The URL of the MySQL database to which the API will connect. It should follow the following format and replace the corresponding values: `jdbc:mysql://{db_host}:{db_port:3306}/{db_name}`
 
+#### `TEST_DATABASE_URL`\*
+
+The URL of the MySQL test database to which the API will connect. It should follow the following format and replace the corresponding values: `jdbc:mysql://{db_host}:{db_port:3306}/{test_db_name}`
+
 #### `DATABASE_USERNAME`\*
 
 The username used to authenticate the database connection.
