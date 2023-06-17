@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class EmailProcessingServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EmailProcessingServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EmailProcessingServiceApplication.class, args);
+    }
 
 }

@@ -1,0 +1,117 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_transaction_entities_table
+      author: AllanTrejos
+      changes:
+        - createTable:
+            tableName: Transaction
+            columns:
+              - column:
+                  name: id
+                  type: varchar(40)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reference
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transactionType
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Bank_id
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: AccountId_id
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: Bank
+            columns:
+              - column:
+                  name: id
+                  type: varchar(40)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: AccountId
+            columns:
+              - column:
+                  name: id
+                  type: varchar(40)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: phoneNumber
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: last4
+                  type: varchar(4)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: actNumber
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: iban
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+        - addForeignKeyConstraint:
+            baseTableName: Transaction
+            baseColumnNames: Bank_id
+            referencedTableName: Bank
+            referencedColumnNames: id
+            constraintName: FK_Transaction_Bank
+        - addForeignKeyConstraint:
+            baseTableName: Transaction
+            baseColumnNames: AccountId_id
+            referencedTableName: AccountId
+            referencedColumnNames: id
+            constraintName: FK_Transaction_AccountId
