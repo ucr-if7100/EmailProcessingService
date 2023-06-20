@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
 import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
+import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,29 +81,31 @@ Banca Móvil                         8
 notificaciones@baccredomatic.com    9
 villaluis24@gmail.com               10
  */
-        Transaction transaction = new Transaction();
-        Bank bank = new Bank();
-        AccountId accountId = new AccountId();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String dateString = data.get(3);
         java.util.Date utilDate = dateFormat.parse(dateString);
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber(data.get(7))//phone number
+                .withLast4(data.get(2))// last4
+                .withActNumber(data.get(6))//actnumber
+                .build();
 
-        bank.setName("BAC");
-        accountId.setPhoneNumber(data.get(7));
-        accountId.setLast4(data.get(2));
-        accountId.setActNumber(data.get(6));
+        Transaction transaction = new Transaction.Builder()
+                .withEmail(data.get(10))//email
+                .withDate(sqlDate) //date
+                .withAmount(Float.parseFloat(data.get(5))) //amount
+                .withReference(data.get(8)) //reference
+                .withDescription("Transferencia local entre cuentas") //description
+                .withCategory(null)
+                .withTransactionType(TransactionType.INCOME) //expense
+                .withBankName("BAC") //bankname
+                .withAccountId(accountId)
+                .build();// accountid
 
-        transaction.setEmail(data.get(10));
-        transaction.setDate(sqlDate);
-        transaction.setAmount(Float.parseFloat(data.get(5)));
-        transaction.setReference(data.get(8));
-        transaction.setDescription("Transferencia local entre cuentas");
-        transaction.setExpense(false);
-        transaction.setBank(bank);
-        transaction.setAccountId(accountId);
+
 
         return transaction;
     }
@@ -232,29 +235,30 @@ CR5201XXXXXXXXXXXX2896              5
 
  */
 
-        Transaction transaction = new Transaction();
-        Bank bank = new Bank();
-        AccountId accountId = new AccountId();
-        bank.setName("BAC");
-        accountId.setIban(data.get(5));
-        accountId.setActNumber(data.get(5));
-        String formattedDate = DateConverterfirst(data.get(0));
+
+        AccountId accountId = new AccountId.Builder()
+                .withIban(data.get(5)) //iban
+                .withActNumber(data.get(5))
+                .build();// actnumber
+
         //formatear la fecha
+        String formattedDate = DateConverterfirst(data.get(0));
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formattedDate;
         java.util.Date utilDate = dateFormat.parse(dateString);
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-
-        transaction.setEmail(data.get(2));
-        transaction.setDate(sqlDate);
-        transaction.setAmount(Float.parseFloat(data.get(6)));
-        //REFERENCE
-        transaction.setDescription("Notificación de Transferencia SINPE");
-        //CATEGORY
-        transaction.setExpense(false);
-        transaction.setBank(bank);
-        transaction.setAccountId(accountId);
+        Transaction transaction = new Transaction.Builder()
+                .withEmail(data.get(2)) //email
+                .withDate(sqlDate) // date
+                .withAmount(Float.parseFloat(data.get(6))) // amount
+                .withReference(null)
+                .withDescription("Notificación de Transferencia SINPE") //description
+                .withCategory(null)
+                .withTransactionType(TransactionType.INCOME) //expense
+                .withBankName("BAC") //bank
+                .withAccountId(accountId)
+                .build();//account
 
         return transaction;
 
@@ -348,9 +352,6 @@ allcincoceroseis@gmail.com  8
 villaluis24@gmail.com       9
 
  */
-        Transaction transaction = new Transaction();
-        Bank bank = new Bank();
-        AccountId accountId = new AccountId();
 
         String formattedDate = DateConvertersecond(data.get(2));
         //formatear la fecha
@@ -358,18 +359,23 @@ villaluis24@gmail.com       9
         String dateString = formattedDate;
         java.util.Date utilDate = dateFormat.parse(dateString);
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        bank.setName("BAC");
-        accountId.setLast4(data.get(3));
 
-        transaction.setBank(bank);
-        transaction.setAccountId(accountId);
-        transaction.setEmail(data.get(9));
-        transaction.setDate(sqlDate);
-        transaction.setAmount(Float.parseFloat(data.get(7)));
-        transaction.setReference(data.get(5));
-        transaction.setDescription(data.get(0));
-        transaction.setCategory(data.get(6));
-        transaction.setExpense(true);
+
+        AccountId accountId = new AccountId.Builder()
+                .withLast4(data.get(3))
+                .build();
+
+        Transaction transaction = new Transaction.Builder()
+                .withBankName("BAC")//bank
+                .withAccountId(accountId)//accountid
+                .withEmail(data.get(9))//email
+                .withDate(sqlDate)//date
+                .withAmount(Float.parseFloat(data.get(7)))//amount
+                .withReference(data.get(5))//reference
+                .withDescription(data.get(0))//description
+                .withCategory(data.get(6))//category
+                .withTransactionType(TransactionType.EXPENSE)
+                .build();//expense
 
 
         return transaction;
@@ -400,8 +406,8 @@ villaluis24@gmail.com       9
         String[] arrayDate = rawDate.split(" ");
 
         String day = arrayDate[1];
-        String month =arrayDate[3];
-        String year =arrayDate[5];
+        String month = arrayDate[3];
+        String year = arrayDate[5];
 
         //ASIGNACION DEL MES
         switch (month.toLowerCase()) {

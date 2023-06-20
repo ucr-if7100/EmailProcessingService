@@ -25,13 +25,12 @@ public class Transaction {
 
     private String category;
 
+    private String bankName;
+
     @Column(name = "transactiontype")
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    @ManyToOne
-    @JoinColumn(name = "Bank_id", nullable = false)
-    private Bank bank;
 
     @ManyToOne
     @JoinColumn(name = "Accountid_id", nullable = false)
@@ -41,7 +40,7 @@ public class Transaction {
         // Constructor vacío para JPA
     }
 
-    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, TransactionType transactionType, Bank bank, AccountId accountId) {
+    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, String bankName, TransactionType transactionType, AccountId accountId) {
         this.id = id;
         this.email = email;
         this.date = date;
@@ -49,8 +48,8 @@ public class Transaction {
         this.reference = reference;
         this.description = description;
         this.category = category;
+        this.bankName = bankName;
         this.transactionType = transactionType;
-        this.bank = bank;
         this.accountId = accountId;
     }
 
@@ -82,12 +81,10 @@ public class Transaction {
         return category;
     }
 
+    public String getBankName(){return bankName;}
+
     public TransactionType getTransactionType() {
         return transactionType;
-    }
-
-    public Bank getBank() {
-        return bank;
     }
 
     public AccountId getAccountId() {
@@ -102,6 +99,7 @@ public class Transaction {
         private String reference;
         private String description;
         private String category;
+        private String bankName;
         private TransactionType transactionType;
         private Bank bank;
         private AccountId accountId;
@@ -141,15 +139,17 @@ public class Transaction {
             return this;
         }
 
+        public Builder withBankName(String bankName) {
+            this.bankName = bankName;
+            return this;
+        }
+
+
         public Builder withTransactionType(TransactionType isExpense) {
             this.transactionType = isExpense;
             return this;
         }
 
-        public Builder withBank(Bank bank) {
-            this.bank = bank;
-            return this;
-        }
 
         public Builder withAccountId(AccountId accountId) {
             this.accountId = accountId;
@@ -157,7 +157,7 @@ public class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bank, accountId);
+            return new Transaction(id, email, date, amount, reference, description, category,bankName, transactionType, accountId);
         }
     }
 }

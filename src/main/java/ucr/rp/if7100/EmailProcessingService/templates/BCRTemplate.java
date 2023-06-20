@@ -6,6 +6,7 @@ import org.jsoup.select.*;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
 import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
+import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -102,25 +103,24 @@ BancoNacionaldeCostaRica            6
 5,000.00                            7
 Costuras                            8
  */
-        Transaction transaction = new Transaction();
-        Bank bank = new Bank();
-        AccountId accountId = new AccountId();
         Date sqlDate = DateConverter(data.get(0));
 
-        bank.setName("BCR");
-        accountId.setPhoneNumber(data.get(4));
+        AccountId accountId = new AccountId.Builder()
+                .withPhoneNumber(data.get(4))
+                .build();
 
-        transaction.setEmail(data.get(1));
-        transaction.setDate(sqlDate);
-        transaction.setAmount(Float.parseFloat(data.get(7)));
-        transaction.setReference(data.get(3));
-        transaction.setDescription(data.get(8));
-        transaction.setCategory(null);
-        transaction.setExpense(false);
-        transaction.setBank(bank);
-        transaction.setAccountId(accountId);
-
-
+        Transaction transaction = new Transaction.Builder()
+                .withEmail(data.get(1))//email
+                .withDate(sqlDate)//date
+                .withAmount(Float.parseFloat(data.get(7)))//amount
+                .withReference(data.get(3))//reference
+                .withDescription(data.get(8))//description
+                .withCategory(null)//category
+                .withTransactionType(TransactionType.INCOME)//expense
+                .withBankName("BCR")//bank
+                .withAccountId(accountId)//accountid
+                .build();
+        
         return transaction;
     }
 

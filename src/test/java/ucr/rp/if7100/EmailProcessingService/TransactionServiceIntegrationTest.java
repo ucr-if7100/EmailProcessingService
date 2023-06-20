@@ -33,10 +33,6 @@ public class TransactionServiceIntegrationTest {
 
     @Test
     public void testSaveTransaction() {
-        Bank bank = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
-        bankService.saveBank(bank);
         AccountId accountId = new AccountId.Builder()
                 .withPhoneNumber("123456789")
                 .build();
@@ -48,8 +44,8 @@ public class TransactionServiceIntegrationTest {
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
+                .withBankName("BAC")
                 .withTransactionType(TransactionType.EXPENSE)
-                .withBank(bank)
                 .withAccountId(accountId)
                 .build();
 
@@ -66,10 +62,7 @@ public class TransactionServiceIntegrationTest {
     @Test
     public void testUpdateTransaction() {
 
-        Bank bank = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
-        bankService.saveBank(bank);
+
         AccountId accountId = new AccountId.Builder()
                 .withPhoneNumber("123456789")
                 .build();
@@ -83,7 +76,7 @@ public class TransactionServiceIntegrationTest {
                 .withDescription("Example transaction")
                 .withCategory("Example category")
                 .withTransactionType(TransactionType.EXPENSE)
-                .withBank(bank)
+                .withBankName("BAC")
                 .withAccountId(accountId)
                 .build();
 
@@ -106,10 +99,6 @@ public class TransactionServiceIntegrationTest {
     public void testGetAllTransactions() {
 
         //Crear varias transacciones
-        Bank bank = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
-        bankService.saveBank(bank);
         AccountId accountId = new AccountId.Builder()
                 .withPhoneNumber("123456789")
                 .build();
@@ -122,7 +111,7 @@ public class TransactionServiceIntegrationTest {
                 .withDescription("Example transaction")
                 .withCategory("Example category")
                 .withTransactionType(TransactionType.EXPENSE)
-                .withBank(bank)
+                .withBankName("BCR")
                 .withAccountId(accountId)
                 .build();
 
@@ -136,7 +125,7 @@ public class TransactionServiceIntegrationTest {
                 .withDescription("Example transaction")
                 .withCategory("Example category")
                 .withTransactionType(TransactionType.EXPENSE)
-                .withBank(bank)
+                .withBankName("BAC")
                 .withAccountId(accountId)
                 .build();
 
@@ -154,10 +143,6 @@ public class TransactionServiceIntegrationTest {
     @Test
     public void testDeleteTransaction() {
         // Crear una transacción
-        Bank bank = new Bank.Builder()
-                .withName("Bank 1")
-                .build();
-        bankService.saveBank(bank);
         AccountId accountId = new AccountId.Builder()
                 .withPhoneNumber("123456789")
                 .build();
@@ -170,7 +155,7 @@ public class TransactionServiceIntegrationTest {
                 .withDescription("Example transaction")
                 .withCategory("Example category")
                 .withTransactionType(TransactionType.EXPENSE)
-                .withBank(bank)
+                .withBankName("BCR")
                 .withAccountId(accountId)
                 .build();
 
