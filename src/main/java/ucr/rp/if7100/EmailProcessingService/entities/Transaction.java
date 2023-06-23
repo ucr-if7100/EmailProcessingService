@@ -101,7 +101,6 @@ public class Transaction {
         private String category;
         private String bankName;
         private TransactionType transactionType;
-        private Bank bank;
         private AccountId accountId;
 
         public Builder() {

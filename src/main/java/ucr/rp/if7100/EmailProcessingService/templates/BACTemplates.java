@@ -1,32 +1,26 @@
 package ucr.rp.if7100.EmailProcessingService.templates;
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
-import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
 import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
-
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BACTemplate {
 
-    /**
-     * A transfer from one BAC acc to another one
-     *
-     * @param mail Will receive an email as an html string
-     * @author: Fabiola
-     */
-    public List<String> mailParsererLocalTxBac(String mail) {
+public class BACTemplates {
+
+
+    public Transaction mailParsererLocalTxBac(String mail) throws ParseException {
+
         List<String> data = new ArrayList<>();
         Document doc = Jsoup.parse(mail);
 
@@ -49,11 +43,8 @@ public class BACTemplate {
 
         data.remove(data.size() - 1);
         data.remove(data.size() - 1);
-        return data;
-    }
 
-    public Transaction saveBACTransactionInformation1(List<String> data) throws ParseException {
-/*
+        /*
 email
 date
 amount
@@ -61,9 +52,7 @@ reference
 description (La descripción como tal de la transacción)
 category
 isExpense (Si es gasto o no)
-----
-bankname
-----
+
 phoneNumber
 last4
 actNumber
@@ -106,21 +95,14 @@ villaluis24@gmail.com               10
                 .build();// accountid
 
 
-
         return transaction;
     }
 
+    //-------------------------------------------------------
 
-    //--------------------------------------------------------------------------------------------
 
-    /**
-     * A SINPE transfer from one bank to BAC
-     *
-     * @param mail Raw html as string to format
-     * @author: Fabiola
-     */
-    public List<String> mailParsererSinpeBAC(String mail) {
-        List<String> datos = new ArrayList<>();
+    public Transaction mailParsererSinpeBAC(String mail) throws ParseException {
+        List<String> data = new ArrayList<>();
         Document doc = Jsoup.parse(mail);
 
 
@@ -132,7 +114,7 @@ villaluis24@gmail.com               10
             Matcher matcherDate = date.matcher(dateElement.text());
             if (matcherDate.find()) {
                 String dateCompleto = matcherDate.group(1).trim();
-                datos.add(dateCompleto);
+                data.add(dateCompleto);
             }
         }
 
@@ -140,7 +122,7 @@ villaluis24@gmail.com               10
         for (Element selement1 : selements) {
             String content = selement1.text();
 
-            datos.add(content);
+            data.add(content);
         }
 
         Elements nameforp = doc.select("p");
@@ -151,7 +133,7 @@ villaluis24@gmail.com               10
             Matcher matcher = pattern.matcher(spanElement.text());
             if (matcher.find()) {
                 String nombreCompleto = matcher.group(1).trim();
-                datos.add(nombreCompleto);
+                data.add(nombreCompleto);
             }
         }
 
@@ -163,7 +145,7 @@ villaluis24@gmail.com               10
             Matcher matcher = pattern.matcher(spanElement.text());
             if (matcher.find()) {
                 String nombreCompleto = matcher.group(1).trim();
-                datos.add(nombreCompleto);
+                data.add(nombreCompleto);
             }
 
             // Obtener el número de referencia
@@ -172,7 +154,7 @@ villaluis24@gmail.com               10
             matcher = pattern.matcher(spanElement.text());
             if (matcher.find()) {
                 String numeroReferencia = matcher.group(1).trim();
-                datos.add(numeroReferencia);
+                data.add(numeroReferencia);
             }
 
             // Obtener el número de cuenta IBAN
@@ -182,7 +164,7 @@ villaluis24@gmail.com               10
             if (matcher.find()) {
                 String numeroCuentaIBAN = matcher.group(1).trim();
                 String numeroCuentaIBANSplit = numeroCuentaIBAN.split(" ")[0];
-                datos.add(numeroCuentaIBANSplit);
+                data.add(numeroCuentaIBANSplit);
             }
 
             // Obtener el monto
@@ -192,16 +174,12 @@ villaluis24@gmail.com               10
             if (matcher.find()) {
                 String monto = matcher.group(1).trim();
                 monto = monto.replace(",", "");
-                datos.add(monto);
+                data.add(monto);
             }
         }
         // Removes CRC in ammount. I.e CRC 5.000
-        datos.set(6, datos.get(6).replace(" CRC", "").replace(",", ""));
+        data.set(6, data.get(6).replace(" CRC", "").replace(",", ""));
 
-        return datos;
-    }
-
-    public Transaction saveBACTransactionInformation2(List<String> data) throws ParseException {
 /*
 TRANSACTION
 
@@ -263,15 +241,10 @@ CR5201XXXXXXXXXXXX2896              5
         return transaction;
 
     }
-    //---------------------------------
 
-    /**
-     * Will parse a mail string from a BAC Transaction (normally from shops) into an object that can be recorded in db.
-     *
-     * @param mail String to parse and record in db
-     * @author: Allán
-     **/
-    public List<String> mailParsererSinpeTablexBac(String mail) {
+    //-------------------------------------------------------
+
+    public Transaction mailParsererSinpeTablexBac(String mail) throws ParseException {
 
         Document doc = Jsoup.parse(mail);
         List<String> data = new ArrayList<>();
@@ -314,11 +287,7 @@ CR5201XXXXXXXXXXXX2896              5
 
         float ammount = Float.parseFloat(data.get(7));
 
-        return data;
-    }
-
-    public Transaction saveBACTransactionInformation3(List<String> data) throws ParseException {
-/*
+        /*
 TRANSACTION
 
 email
@@ -382,7 +351,8 @@ villaluis24@gmail.com       9
 
     }
 
-//---------------------------------
+
+    //-------------------------------------------------------
 
     /**
      * This method will convert a raw date string to a date string for
@@ -471,6 +441,6 @@ villaluis24@gmail.com       9
         }
         return null;
     }
+
+
 }
-
-

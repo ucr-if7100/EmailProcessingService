@@ -27,8 +27,6 @@ public class TransactionServiceIntegrationTest {
     @Autowired
     private TransactionService transactionService;
     @Autowired
-    private BankService bankService;
-    @Autowired
     private AccountIdService accountIdService;
 
     @Test

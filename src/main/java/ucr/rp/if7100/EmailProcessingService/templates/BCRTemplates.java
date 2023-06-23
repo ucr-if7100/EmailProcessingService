@@ -1,10 +1,10 @@
 package ucr.rp.if7100.EmailProcessingService.templates;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
-import org.jsoup.select.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
-import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
 import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
 
@@ -14,15 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BCRTemplate {
+public class BCRTemplates {
 
-    /**
-     * Will parse a mail string from a BCR Sinpe into an object that can be recorded in db.
-     *
-     * @param mail String to parse and record in db
-     * @author: Allán
-     **/
-    public List<String> mailParsererSinpeBcr(String mail) {
+
+    public Transaction mailParsererSinpeBcr(String mail) {
+
         Document doc = Jsoup.parse(mail);
         List<String> data = new ArrayList<>();
 
@@ -73,11 +69,7 @@ public class BCRTemplate {
         data.set(8, data.get(8).replace(" ", ""));
         data.set(7, data.get(7).replace("CRC ", "").replace(",", "").replace(" ", ""));
 
-        return data;
-    }
-
-    public Transaction saveBCRTransactionInformation1(List<String> data) throws ParseException {
-/*
+  /*
 email
 date
 amount
@@ -103,6 +95,7 @@ BancoNacionaldeCostaRica            6
 5,000.00                            7
 Costuras                            8
  */
+
         Date sqlDate = DateConverter(data.get(0));
 
         AccountId accountId = new AccountId.Builder()
@@ -122,9 +115,11 @@ Costuras                            8
                 .build();
 
         return transaction;
+
+
     }
 
-    //-------------------------------------
+//-------------------------------------------------------------------
     public Date DateConverter(String fechaString) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
