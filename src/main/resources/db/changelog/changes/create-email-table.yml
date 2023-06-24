@@ -8,10 +8,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: varchar(40)
                   constraints:
                     primaryKey: true
+                    nullable: false
               - column:
                   name: subject
                   type: varchar(255)
