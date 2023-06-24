@@ -31,7 +31,7 @@ databaseChangeLog:
                   name: reference
                   type: varchar(255)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: description
                   type: varchar(255)
@@ -40,6 +40,11 @@ databaseChangeLog:
               - column:
                   name: category
                   type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: bank_name
+                  type: varchar(40)
                   constraints:
                     nullable: false
               - column:

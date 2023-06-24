@@ -25,6 +25,7 @@ public class Transaction {
 
     private String category;
 
+    @Column(name = "bank_name")
     private String bankName;
 
     @Column(name = "transactiontype")
@@ -32,11 +33,11 @@ public class Transaction {
     private TransactionType transactionType;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Accountid_id", nullable = false)
     private AccountId accountId;
 
-    protected Transaction() {
+    public Transaction() {
         // Constructor vacío para JPA
     }
 

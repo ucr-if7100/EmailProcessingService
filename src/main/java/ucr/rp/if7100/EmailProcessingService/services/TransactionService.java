@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
 import ucr.rp.if7100.EmailProcessingService.repositories.TransactionRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,5 +34,9 @@ public class TransactionService {
     //public void deleteTransaction(Long id) {
     public void deleteTransaction(String id) {
         transactionRepository.deleteById(id);
+    }
+
+    public boolean existsByEmailAndDateAndAmountAndReference(String email, Date date, float amount, String reference) {
+        return transactionRepository.existsByEmailAndDateAndAmountAndReference(email, date, amount, reference);
     }
 }

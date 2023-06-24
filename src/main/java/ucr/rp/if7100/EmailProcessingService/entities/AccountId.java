@@ -22,7 +22,7 @@ public class AccountId {
     @Column(nullable = true)
     private String iban;
 
-    protected AccountId() {
+    public AccountId() {
         // Constructor vacío para JPA
     }
 

@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 
 public class TemplateClassifier {
 
-
     public String templateClassifierTool(String html) {
         Document doc = Jsoup.parse(html);
         String bodyText = doc.body().text();
@@ -22,6 +21,4 @@ public class TemplateClassifier {
             return null;
         }
     }
-
-
 }
