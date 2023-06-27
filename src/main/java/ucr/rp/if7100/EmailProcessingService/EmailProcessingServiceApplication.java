@@ -1,17 +1,21 @@
 package ucr.rp.if7100.EmailProcessingService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
 import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
+import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
+import ucr.rp.if7100.EmailProcessingService.services.AccountIdService;
+import ucr.rp.if7100.EmailProcessingService.services.TransactionService;
 import ucr.rp.if7100.EmailProcessingService.templates.*;
 
+import java.sql.Date;
 import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -47,6 +51,7 @@ public class EmailProcessingServiceApplication {
         System.out.println(tc.templateClassifierTool(mail2));
         System.out.println(tc.templateClassifierTool(mail3));
         System.out.println(tc.templateClassifierTool(mail4));
+
 
 
     }
