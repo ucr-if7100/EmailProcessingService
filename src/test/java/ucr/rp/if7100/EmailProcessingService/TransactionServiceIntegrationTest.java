@@ -38,7 +38,7 @@ public class TransactionServiceIntegrationTest {
         Transaction transaction = new Transaction.Builder()
                 .withEmail("example@example.com")
                 .withDate(new Date(2023, 6, 20))
-                .withAmount(100.0f)
+                .withAmount(1000.00f)
                 .withReference("REF123")
                 .withDescription("Example transaction")
                 .withCategory("Example category")
