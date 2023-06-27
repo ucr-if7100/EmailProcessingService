@@ -57,6 +57,11 @@ databaseChangeLog:
                   type: varchar(40)
                   constraints:
                     nullable: false
+              - column:
+                  name: read_status
+                  type: boolean
+                  constraints:
+                    nullable: false
 
         - createTable:
             tableName: Bank

@@ -51,6 +51,7 @@ public class TransactionServiceIntegrationTest {
                 .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();
 
         Transaction savedTransaction = transactionService.saveTransaction(transaction);
@@ -85,6 +86,7 @@ public class TransactionServiceIntegrationTest {
                 .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();
 
         // Guardar la transacción
@@ -124,6 +126,7 @@ public class TransactionServiceIntegrationTest {
                 .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();
 
         transactionService.saveTransaction(transaction1);
@@ -138,6 +141,7 @@ public class TransactionServiceIntegrationTest {
                 .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();
 
         transactionService.saveTransaction(transaction2);
@@ -172,6 +176,7 @@ public class TransactionServiceIntegrationTest {
                 .withTransactionType(TransactionType.EXPENSE)
                 .withBank(bank)
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();
 
         Transaction savedTransaction = transactionService.saveTransaction(transaction);

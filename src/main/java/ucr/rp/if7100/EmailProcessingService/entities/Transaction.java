@@ -37,11 +37,14 @@ public class Transaction {
     @JoinColumn(name = "Accountid_id", nullable = false)
     private AccountId accountId;
 
+    @Column(name = "read_status")
+    private boolean readStatus;
+
     protected Transaction() {
         // Constructor vacío para JPA
     }
 
-    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, TransactionType transactionType, Bank bank, AccountId accountId) {
+    public Transaction(String id, String email, Date date, float amount, String reference, String description, String category, TransactionType transactionType, Bank bank, AccountId accountId, boolean readStatus) {
         this.id = id;
         this.email = email;
         this.date = date;
@@ -52,7 +55,9 @@ public class Transaction {
         this.transactionType = transactionType;
         this.bank = bank;
         this.accountId = accountId;
+        this.readStatus = readStatus;
     }
+
 
     public String getId() {
         return id;
@@ -94,6 +99,10 @@ public class Transaction {
         return accountId;
     }
 
+    public boolean isReadStatus() {
+        return readStatus;
+    }
+
     public static class Builder {
         private String id;
         private String email;
@@ -105,6 +114,7 @@ public class Transaction {
         private TransactionType transactionType;
         private Bank bank;
         private AccountId accountId;
+        private boolean readStatus;
 
         public Builder() {
             // Generar un ID aleatorio utilizando UUID
@@ -156,8 +166,13 @@ public class Transaction {
             return this;
         }
 
+        public Builder withRead(boolean readStatus) {
+            this.readStatus = readStatus;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bank, accountId);
+            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bank, accountId, readStatus);
         }
     }
 }
