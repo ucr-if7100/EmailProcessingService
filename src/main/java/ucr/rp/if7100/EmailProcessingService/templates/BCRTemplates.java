@@ -19,55 +19,68 @@ public class BCRTemplates {
 
     public Transaction mailParsererSinpeBcr(String mail) {
 
-        Document doc = Jsoup.parse(mail);
         List<String> data = new ArrayList<>();
 
-        Elements elementsdate = doc.select("p:contains(Esta transacción fue realizada)");
-        if (!elementsdate.isEmpty()) {
-            Element element = elementsdate.first();
-            String fechaTransaccion = element.text().replace("Esta transacción fue realizada el ", "");
-            int indiceEspacio = fechaTransaccion.indexOf(" ");
-            if (indiceEspacio != -1) {
-                String fecha = fechaTransaccion.substring(0, indiceEspacio);
-                data.add(fecha);
-            }
+        Document doc = Jsoup.parse(mail);
+
+        Element nombreElement = doc.selectFirst("p:contains(Estimado (a):)");
+        if (nombreElement != null) {
+            String nombre = nombreElement.text().split(":")[1].trim();
+            data.add(nombre);
         }
 
-        Elements elementsmail = doc.select("p.MsoNormal:contains(To:)");
-        if (!elementsmail.isEmpty()) {
-            Element elemente = elementsmail.first();
-            String emailText = elemente.text();
-            int startIndex = emailText.indexOf(":") + 1;
-            if (startIndex != -1) {
-                String email = emailText.substring(startIndex).trim();
-                data.add(email);
-            }
+        Element refElement = doc.selectFirst("p:contains(Número de referencia:)");
+        if (refElement != null) {
+            String referencia = refElement.text().split(":")[1].trim();
+            data.add(referencia);
         }
 
-        Elements paragraphs = doc.select("p");
-        for (Element paragraph : paragraphs) {
-            Elements spans = paragraph.select("span");
-            for (Element span : spans) {
-                String text = span.text();
-                String[] trimmed = text.split(":");
-                if (trimmed.length > 1) {
-                    data.add(text.split(":")[1]);
-                }
-            }
+        Element telefonoElement = doc.selectFirst("p:contains(Teléfono Destino:)");
+        if (telefonoElement != null) {
+            String telefono = telefonoElement.text().split(":")[1].trim();
+            data.add(telefono);
+        }
+
+        Element clienteElement = doc.selectFirst("p:contains(Nombre cliente Destino:)");
+        if (clienteElement != null) {
+            String cliente = clienteElement.text().split(":")[1].trim();
+            data.add(cliente);
+        }
+
+        Element entidadElement = doc.selectFirst("p:contains(Entidad Destino:)");
+        if (entidadElement != null) {
+            String entidad = entidadElement.text().split(":")[1].trim();
+            data.add(entidad);
+        }
+
+        Element montoElement = doc.selectFirst("p:contains(Monto:)");
+        if (montoElement != null) {
+            String monto = montoElement.text().split(":")[1].trim();
+            data.add(monto);
+        }
+
+        Element motivoElement = doc.selectFirst("p:contains(Motivo:)");
+        if (motivoElement != null) {
+            String motivo = motivoElement.text().split(":")[1].trim();
+            data.add(motivo);
+        }
+
+        Element fechaElement = doc.selectFirst("p:contains(Esta transacción fue realizada el)");
+        if (fechaElement != null) {
+            String fecha = fechaElement.text().replace("Esta transacción fue realizada el", "").trim();
+            fecha = fecha.split(" ")[0];
+            data.add(fecha);
+        }
+
+        Element correoElement = doc.selectFirst("strong:contains(To:)");
+        if (correoElement != null) {
+            String correo = correoElement.nextSibling().toString().trim();
+            correo = correo.split(" ")[0];
+            data.add(correo);
         }
 
 
-        //Removes corrupted content. I.e: 10:17 am results 17 am in last entry
-        data.remove(data.size() - 1);
-        data.set(0, data.get(0).replace(" ", ""));
-        data.set(1, data.get(1).replace(" ", ""));
-        data.set(2, data.get(2).replace(" ", ""));
-        data.set(3, data.get(3).replace(" ", ""));
-        data.set(4, data.get(4).replace(" ", ""));
-        data.set(5, data.get(5).replace(" ", ""));
-        data.set(7, data.get(7).replace(" ", ""));
-        data.set(8, data.get(8).replace(" ", ""));
-        data.set(7, data.get(7).replace("CRC ", "").replace(",", "").replace(" ", ""));
+        data.set(5, data.get(5).replace(" ", "").replace("CRC ", "").replace(",", ""));
 
   /*
 email
@@ -85,31 +98,34 @@ last4
 actNumber
 iban
 -------
-13/12/2022                          0
-allcincoceroseis@gmail.com          1
-ALLANFABIANTREJOSSALAZAR            2
-2022121315183010961550962           3
-0                                   4
-ChaconMunozSeidyTatiana             5
-BancoNacionaldeCostaRica            6
-5,000.00                            7
-Costuras                            8
+VEGA VASQUEZ MARIA PAOLA                0
+2023050715283002344967261               1
+71614985                                2
+KATIA VICTORIA VASQUEZ VALLE            3
+Banco Nacional de Costa Rica            4
+3000.00                                 5
+Transferencia SINPE                     6
+07/05/2023                              7
+paovv_1298@hotmail.com                  8
  */
 
-        Date sqlDate = DateConverter(data.get(0));
+        Date sqlDate = DateConverter(data.get(7));
 
         AccountId accountId = new AccountId.Builder()
-                .withPhoneNumber(data.get(4))
+                .withActNumber("")
+                .withIban("")
+                .withLast4("")
+                .withPhoneNumber("")
                 .build();
 
         Transaction transaction = new Transaction.Builder()
-                .withEmail(data.get(1))//email
+                .withEmail(data.get(8))//email
                 .withDate(sqlDate)//date
-                .withAmount(Float.parseFloat(data.get(7)))//amount
-                .withReference(data.get(3))//reference
-                .withDescription(data.get(8))//description
+                .withAmount(Float.parseFloat(data.get(5)))//amount
+                .withReference(data.get(1))//reference
+                .withDescription(data.get(6))//description
                 .withCategory(null)//category
-                .withTransactionType(TransactionType.INCOME)//expense
+                .withTransactionType(TransactionType.EXPENSE)//expense
                 .withBankName("BCR")//bank
                 .withAccountId(accountId)//accountid
                 .build();
