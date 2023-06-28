@@ -32,24 +32,12 @@ public class KafkaJob {
             }
         } catch (Exception e) {
             Logger logger = LoggerFactory.getLogger(this.getClass());
-            logger.error("Error al ejecutar saveEmailsJob", e);
+            logger.error("Error al ejecutar sendTransactionJob", e);
         }
     }
 
     public void markReadTransaction(Transaction transaction){
-        Transaction updatedTransaction = new Transaction(
-                transaction.getId(),
-                transaction.getEmail(),
-                transaction.getDate(),
-                transaction.getAmount(),
-                transaction.getReference(),
-                transaction.getDescription(),
-                transaction.getCategory(),
-                transaction.getTransactionType(),
-                transaction.getBank(),
-                transaction.getAccountId(),
-                true // Establecer readStatus a true
-        );
-        transactionService.saveTransaction(updatedTransaction);
+        transaction.setReadStatus(true);
+        transactionService.saveTransaction(transaction);
     }
 }

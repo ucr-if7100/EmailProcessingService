@@ -39,8 +39,8 @@ public class Transaction {
 
     @Column(name = "read_status")
     private boolean readStatus;
-  
-    public Transaction() {
+
+    protected Transaction() {
         // Constructor vacío para JPA
     }
 
@@ -99,6 +99,10 @@ public class Transaction {
 
     public boolean isReadStatus() {
         return readStatus;
+    }
+
+    public void setReadStatus(boolean readStatus) {
+        this.readStatus = readStatus;
     }
 
     public static class Builder {
@@ -172,7 +176,7 @@ public class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bankName, accountId, readStatus);
+            return new Transaction(id, email, date, amount, reference, description, category, bankName, transactionType, accountId, readStatus);
         }
     }
 }

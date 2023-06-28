@@ -67,6 +67,7 @@ public class TransactionJob {
                                     .withTransactionType(transactionTemp.getTransactionType())//expense
                                     .withBankName(transactionTemp.getBankName())//bank
                                     .withAccountId(existingAccountId)//accountid
+                                    .withRead(false)
                                     .build();
 
                             transactionService.saveTransaction(transaction);
@@ -76,7 +77,7 @@ public class TransactionJob {
             }
         } catch (Exception e) {
             Logger logger = LoggerFactory.getLogger(this.getClass());
-            logger.error("Error al ejecutar saveEmailsJob", e);
+            logger.error("Error al ejecutar saveTransactionsJob", e);
         }
     }
 
