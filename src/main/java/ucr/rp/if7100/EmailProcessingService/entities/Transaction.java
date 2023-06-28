@@ -25,23 +25,26 @@ public class Transaction {
 
     private String category;
 
+    @Column(name = "bank_name")
+    private String bankName;
+
     @Column(name = "transactiontype")
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    @ManyToOne
-    @JoinColumn(name = "Bank_id", nullable = false)
-    private Bank bank;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Accountid_id", nullable = false)
     private AccountId accountId;
 
-    protected Transaction() {
+    @Column(name = "read_status")
+    private boolean readStatus;
+  
+    public Transaction() {
         // Constructor vacío para JPA
     }
 
-    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, TransactionType transactionType, Bank bank, AccountId accountId) {
+    private Transaction(String id, String email, Date date, float amount, String reference, String description, String category, String bankName, TransactionType transactionType, AccountId accountId, boolean readStatus) {
         this.id = id;
         this.email = email;
         this.date = date;
@@ -49,10 +52,12 @@ public class Transaction {
         this.reference = reference;
         this.description = description;
         this.category = category;
+        this.bankName = bankName;
         this.transactionType = transactionType;
-        this.bank = bank;
         this.accountId = accountId;
+        this.readStatus = readStatus;
     }
+
 
     public String getId() {
         return id;
@@ -82,16 +87,18 @@ public class Transaction {
         return category;
     }
 
+    public String getBankName(){return bankName;}
+
     public TransactionType getTransactionType() {
         return transactionType;
     }
 
-    public Bank getBank() {
-        return bank;
-    }
-
     public AccountId getAccountId() {
         return accountId;
+    }
+
+    public boolean isReadStatus() {
+        return readStatus;
     }
 
     public static class Builder {
@@ -102,9 +109,10 @@ public class Transaction {
         private String reference;
         private String description;
         private String category;
+        private String bankName;
         private TransactionType transactionType;
-        private Bank bank;
         private AccountId accountId;
+        private boolean readStatus;
 
         public Builder() {
             // Generar un ID aleatorio utilizando UUID
@@ -141,23 +149,30 @@ public class Transaction {
             return this;
         }
 
+        public Builder withBankName(String bankName) {
+            this.bankName = bankName;
+            return this;
+        }
+
+
         public Builder withTransactionType(TransactionType isExpense) {
             this.transactionType = isExpense;
             return this;
         }
 
-        public Builder withBank(Bank bank) {
-            this.bank = bank;
-            return this;
-        }
 
         public Builder withAccountId(AccountId accountId) {
             this.accountId = accountId;
             return this;
         }
 
+        public Builder withRead(boolean readStatus) {
+            this.readStatus = readStatus;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bank, accountId);
+            return new Transaction(id, email, date, amount, reference, description, category, transactionType, bankName, accountId, readStatus);
         }
     }
 }

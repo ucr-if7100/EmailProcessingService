@@ -74,6 +74,18 @@ public class Email {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "Email{" +
+                "id='" + id + '\'' +
+                ", subject='" + subject + '\'' +
+                ", fromAddress='" + fromAddress + '\'' +
+                ", toAddress='" + toAddress + '\'' +
+                ", sentDate='" + sentDate + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
+
     public static class Builder {
         private String id;
         private String subject;

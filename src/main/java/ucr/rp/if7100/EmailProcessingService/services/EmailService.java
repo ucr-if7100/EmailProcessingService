@@ -104,4 +104,8 @@ public class EmailService {
         }
         return null;
     }
+
+    public List<Email> getEmails(){
+        return  emailRepository.findAll();
+    }
 }
