@@ -1,12 +1,13 @@
 package ucr.rp.if7100.EmailProcessingService.templates;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
 import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,32 +45,6 @@ public class BACTemplates {
         data.remove(data.size() - 1);
         data.remove(data.size() - 1);
 
-        /*
-email
-date
-amount
-reference
-description (La descripción como tal de la transacción)
-category
-isExpense (Si es gasto o no)
-
-phoneNumber
-last4
-actNumber
-iban
--------
-WILLIAM ALONSO PIEDRA SOLANO        0
-LUIS GABRIEL ARGUEDAS VILLALOBOS    1
-****9420.                           2
-15-05-2023                          3
-16:00:43                            4
-5,000.00 CRC                        5
-2023051510283002825683599           6
-2295-9797                           7
-Banca Móvil                         8
-notificaciones@baccredomatic.com    9
-villaluis24@gmail.com               10
- */
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String dateString = data.get(3);
@@ -92,14 +67,12 @@ villaluis24@gmail.com               10
                 .withTransactionType(TransactionType.INCOME) //expense
                 .withBankName("BAC") //bankname
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();// accountid
 
 
         return transaction;
     }
-
-    //-------------------------------------------------------
-
 
     public Transaction mailParsererSinpeBAC(String mail) throws ParseException {
         List<String> data = new ArrayList<>();
@@ -180,40 +153,6 @@ villaluis24@gmail.com               10
         // Removes CRC in ammount. I.e CRC 5.000
         data.set(6, data.get(6).replace(" CRC", "").replace(",", ""));
 
-/*
-TRANSACTION
-
-email
-date
-amount
-reference
-description (La descripción como tal de la transacción)
-category
-isExpense (Si es gasto o no)
-----
-BANK
-
-bankname
-----
-ACCOUNTID
-
-phoneNumber
-last4
-actNumber
-iban
--------
-16 de marzo de 2023 1:45 p.         0
-sinpe@notificacionesbaccr.com       1
-VILLALUIS24@gmail.com               2
-LUIS GABRIEL ARGUEDAS VILLALOB      3
-2023031610224011141398013           4
-CR5201XXXXXXXXXXXX2896              5
-14,000.00                           6
-
-
- */
-
-
         AccountId accountId = new AccountId.Builder()
                 .withIban(data.get(5)) //iban
                 .withActNumber(data.get(5))
@@ -236,13 +175,12 @@ CR5201XXXXXXXXXXXX2896              5
                 .withTransactionType(TransactionType.INCOME) //expense
                 .withBankName("BAC") //bank
                 .withAccountId(accountId)
+                .withRead(false)
                 .build();//account
 
         return transaction;
 
     }
-
-    //-------------------------------------------------------
 
     public Transaction mailParsererSinpeTablexBac(String mail) throws ParseException {
 
@@ -287,41 +225,6 @@ CR5201XXXXXXXXXXXX2896              5
 
         float ammount = Float.parseFloat(data.get(7));
 
-        /*
-TRANSACTION
-
-email
-date
-amount
-reference
-description (La descripción como tal de la transacción)
-category
-isExpense (Si es gasto o no)
-----
-BANK
-
-bankname
-----
-ACCOUNTID
-
-phoneNumber
-last4
-actNumber
-iban
--------
-TOYS CARTAGO                0
-CARTAGO, Costa Rica         1
-May 12, 2023, 09:37         2
-2710                        3
-000346                      4
-313209371015                5
-COMPRA                      6
-1395.00                     7
-allcincoceroseis@gmail.com  8
-villaluis24@gmail.com       9
-
- */
-
         String formattedDate = DateConvertersecond(data.get(2));
         //formatear la fecha
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -344,15 +247,11 @@ villaluis24@gmail.com       9
                 .withDescription(data.get(0))//description
                 .withCategory(data.get(6))//category
                 .withTransactionType(TransactionType.EXPENSE)
+                .withRead(false)
                 .build();//expense
 
-
         return transaction;
-
     }
-
-
-    //-------------------------------------------------------
 
     /**
      * This method will convert a raw date string to a date string for
@@ -362,16 +261,7 @@ villaluis24@gmail.com       9
      * @author: Fabiola
      */
     public String DateConverterfirst(String rawDate) {
- /*
-        jue,            0
-        16              1
-        de              2
-        marzo           3
-        de              4
-        2023            5
-        1:45            6
-        p.              7
-         */
+
         String finalDate = "";
         String[] arrayDate = rawDate.split(" ");
 

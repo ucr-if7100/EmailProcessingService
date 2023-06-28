@@ -6,11 +6,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
-import ucr.rp.if7100.EmailProcessingService.entities.Bank;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
 import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
 import ucr.rp.if7100.EmailProcessingService.services.AccountIdService;
-import ucr.rp.if7100.EmailProcessingService.services.BankService;
 import ucr.rp.if7100.EmailProcessingService.services.TransactionService;
 
 import java.sql.Date;

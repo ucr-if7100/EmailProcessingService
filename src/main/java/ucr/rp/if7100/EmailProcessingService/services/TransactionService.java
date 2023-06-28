@@ -47,7 +47,6 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    //public void deleteTransaction(Long id) {
     public void deleteTransaction(String id) {
         transactionRepository.deleteById(id);
     }
@@ -66,6 +65,7 @@ public class TransactionService {
         TransactionCreatedEvent transactionCreatedEvent = event;
         // Enviar el objeto Person a Kafka
         kafkaTemplate.send(topic, transactionCreatedEvent);
+    }
 
     public boolean existsByEmailAndDateAndAmountAndReference(String email, Date date, float amount, String reference) {
         return transactionRepository.existsByEmailAndDateAndAmountAndReference(email, date, amount, reference);

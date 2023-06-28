@@ -3,7 +3,6 @@ package ucr.rp.if7100.EmailProcessingService.templates;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import ucr.rp.if7100.EmailProcessingService.entities.AccountId;
 import ucr.rp.if7100.EmailProcessingService.entities.Transaction;
 import ucr.rp.if7100.EmailProcessingService.enums.TransactionType;
@@ -82,33 +81,6 @@ public class BCRTemplates {
 
         data.set(5, data.get(5).replace(" ", "").replace("CRC ", "").replace(",", ""));
 
-  /*
-email
-date
-amount
-reference
-description (La descripción como tal de la transacción)
-category
-isExpense (Si es gasto o no)
-----
-bankname
-----
-phoneNumber
-last4
-actNumber
-iban
--------
-VEGA VASQUEZ MARIA PAOLA                0
-2023050715283002344967261               1
-71614985                                2
-KATIA VICTORIA VASQUEZ VALLE            3
-Banco Nacional de Costa Rica            4
-3000.00                                 5
-Transferencia SINPE                     6
-07/05/2023                              7
-paovv_1298@hotmail.com                  8
- */
-
         Date sqlDate = DateConverter(data.get(7));
 
         AccountId accountId = new AccountId.Builder()
@@ -128,6 +100,7 @@ paovv_1298@hotmail.com                  8
                 .withTransactionType(TransactionType.EXPENSE)//expense
                 .withBankName("BCR")//bank
                 .withAccountId(accountId)//accountid
+                .withRead(false)
                 .build();
 
         return transaction;
@@ -135,7 +108,6 @@ paovv_1298@hotmail.com                  8
 
     }
 
-//-------------------------------------------------------------------
     public Date DateConverter(String fechaString) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -146,5 +118,4 @@ paovv_1298@hotmail.com                  8
             return null;
         }
     }
-
 }
