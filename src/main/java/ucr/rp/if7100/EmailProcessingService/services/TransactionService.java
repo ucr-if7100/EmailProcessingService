@@ -52,7 +52,6 @@ public class TransactionService {
         transactionRepository.deleteById(id);
     }
 
-
     public void publishEvent(Transaction transaction) {
         TransactionCreatedEvent transactionCreatedEvent = new TransactionCreatedEvent();
         transactionCreatedEvent.setId(UUID.randomUUID().toString());
@@ -67,5 +66,8 @@ public class TransactionService {
         TransactionCreatedEvent transactionCreatedEvent = event;
         // Enviar el objeto Person a Kafka
         kafkaTemplate.send(topic, transactionCreatedEvent);
+
+    public boolean existsByEmailAndDateAndAmountAndReference(String email, Date date, float amount, String reference) {
+        return transactionRepository.existsByEmailAndDateAndAmountAndReference(email, date, amount, reference);
     }
 }

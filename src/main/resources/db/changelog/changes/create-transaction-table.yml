@@ -31,7 +31,7 @@ databaseChangeLog:
                   name: reference
                   type: varchar(255)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: description
                   type: varchar(255)
@@ -41,15 +41,15 @@ databaseChangeLog:
                   name: category
                   type: varchar(255)
                   constraints:
+                    nullable: true
+              - column:
+                  name: bank_name
+                  type: varchar(40)
+                  constraints:
                     nullable: false
               - column:
                   name: transactionType
                   type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: Bank_id
-                  type: varchar(40)
                   constraints:
                     nullable: false
               - column:
@@ -60,21 +60,6 @@ databaseChangeLog:
               - column:
                   name: read_status
                   type: boolean
-                  constraints:
-                    nullable: false
-
-        - createTable:
-            tableName: Bank
-            columns:
-              - column:
-                  name: id
-                  type: varchar(40)
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: varchar(255)
                   constraints:
                     nullable: false
 
@@ -108,12 +93,6 @@ databaseChangeLog:
                   constraints:
                     nullable: true
 
-        - addForeignKeyConstraint:
-            baseTableName: Transaction
-            baseColumnNames: Bank_id
-            referencedTableName: Bank
-            referencedColumnNames: id
-            constraintName: FK_Transaction_Bank
         - addForeignKeyConstraint:
             baseTableName: Transaction
             baseColumnNames: AccountId_id

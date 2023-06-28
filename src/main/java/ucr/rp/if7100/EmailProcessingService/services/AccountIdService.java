@@ -25,6 +25,9 @@ public class AccountIdService {
         Optional<AccountId> optionalAccountId = accountIdRepository.findById(id);
         return optionalAccountId.orElse(null);
     }
+    public AccountId findByPhoneNumberAndLast4AndActNumber(String phone, String last4, String actNumber){
+        return accountIdRepository.findByPhoneNumberAndLast4AndActNumber(phone,last4,actNumber);
+    }
 
     public AccountId saveAccountId(AccountId accountId) {
         return accountIdRepository.save(accountId);
